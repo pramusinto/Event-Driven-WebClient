@@ -1,0 +1,41 @@
+spring:
+  redis:
+    host: 10.70.130.6
+    port: 6379
+    password: password_redis
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 1000ms
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:10.70.130.2}:${DB_PORT:5432}/${DB_NAME:single_db}?currentSchema=staging&sendStringParametersAsUnicode=false
+    username: ${DB_USER:user_eagle}
+    password: ${DB_PASS:P@ssw0rd@123!}
+  hikari:
+    minimum-idle: 10
+    maximum-pool-size: 100
+  kafka:
+    bootstrap-servers: 10.70.130.9:9092
+    consumer:
+      group-id: scoring-report-group
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      producer.value-serializer: org.apache.kafka.common.serialization.StringSerializer
+app:
+  topic:
+    listen-topic: scoring-sub
+    publish-topic: scoring-pub
+  auth:
+    username: sas.cli #deloitte_uat1
+    password: #Orion1234
+    body-username: sasjobexecutioner
+    body-password: Kunc1ny@s@sEB
+#  scoring-url: https://dev-sas.pefindobirokredit.com
+  scoring-url: http://${INGRESS_HOST:localhost:8880}/dummy/scoring-engine
+  scoring-default-path: /microanalyticScore/modules/idscore_rtlcor_scoringengine_bigreport/steps/execute
+#  scoring-url: https://dev-sas.idscoresystem.id
+  timeout: 25 # in seconds
+  interval-scheduler: 15000 # in milliseconds

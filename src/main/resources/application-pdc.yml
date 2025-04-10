@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?currentSchema=staging&sendStringParametersAsUnicode=false
+    username: ${DB_USER:user_eagle}
+    password: ${DB_PASS:P@ssw0rd@123}
+  jpa:
+    properties:
+     hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  kafka:
+    bootstrap-servers: 10.70.200.201:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: scoring-group
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      producer.value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#  consumer:
+#    properties:
+#      max:
+#        poll:
+#          interval:
+#            ms: 5000
+
+app:
+  topic:
+    listen-topic: scoring-sub
+    publish-topic: scoring-pub
+  auth:
+    username: sas.cli #deloitte_uat1
+    password: #Orion1234
+    body-username: sasjobexecutioner
+    body-password: Kunc1ny@s@sEB
+  scoring-url: https://sas.idscoresystem.id
+  scoring-default-path: /microanalyticScore/modules/genericmodule_rtlcor/steps/execute
+  #scoring-url: https://eagle-be.idscoresystem.id/dummy/scoring-engine
+  timeout: 35 # in seconds
+  interval-scheduler: 10000 # in milliseconds

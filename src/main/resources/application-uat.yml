@@ -1,0 +1,56 @@
+spring:
+  redis:
+    host: 10.70.130.6
+    port: 6379
+    password: password_redis
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 1000ms
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:10.70.14.26}:${DB_PORT:5432}/${DB_NAME:uat_eagle_db}?currentSchema=staging&sendStringParametersAsUnicode=false
+    username: ${DB_USER:user_eagle}
+    password: ${DB_PASS:P@ssw0rd@123!}
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 60
+  jpa:
+    properties:
+     hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  kafka:
+    bootstrap-servers: ${IP_KAFKA:10.70.15.31}:9092,${IP_KAFKA:10.70.15.32}:9092,${IP_KAFKA:10.70.15.33}:9092
+    consumer:
+      auto-offset-reset: earliest
+      group-id: scoring-group
+      properties:
+        partition.assignment.strategy: org.apache.kafka.clients.consumer.RoundRobinAssignor
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      producer.value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#  consumer:
+#    properties:
+#      max:
+#        poll:
+#          interval:
+#            ms: 5000
+
+app:
+  topic:
+    listen-topic: scoring-sub
+    publish-topic: scoring-pub
+  auth:
+    username: sas.cli #deloitte_uat1
+    password: #Orion1234
+    body-username: sasjobexecutioner
+    body-password: Kunc1ny@s@sEB
+  scoring-url: https://uat-sas.idscoresystem.id
+  scoring-default-path: /microanalyticScore/modules/idscore_rtlcor_scoringengine_bigreport/steps/execute
+  # scoring-url: http://${INGRESS_HOST:10.50.185.35}/dummy/scoring-engine
+  timeout: 35 # in seconds
+  interval-scheduler: 15000 # in milliseconds
